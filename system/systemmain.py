@@ -6,6 +6,12 @@ referer: unknow
 author: Lucifer
 description: 包含所有system漏洞类型，封装成一个模块
 '''
+#ssh漏洞
+from system.ssh.libssh_bypass_auth import libssh_bypass_auth_BaseVerify
+
+#elasticsearch vulns
+from system.elasticsearch.elasticsearch_unauth import elasticsearch_unauth_BaseVerify
+
 #couchdb vulns
 from system.couchdb.couchdb_unauth import couchdb_unauth_BaseVerify
 
@@ -40,6 +46,7 @@ from system.weblogic.weblogic_weak_pass import weblogic_weak_pass_BaseVerify
 from system.weblogic.weblogic_ssrf import weblogic_ssrf_BaseVerify
 from system.weblogic.weblogic_xmldecoder_exec import weblogic_xmldecoder_exec_BaseVerify
 from system.weblogic.weblogic_interface_disclosure import weblogic_interface_disclosure_BaseVerify
+from system.weblogic.weblogic_ws_utc_xxe import weblogic_ws_utc_xxe_BaseVerify 
 
 #hudson vulns
 from system.hudson.hudson_ws_disclosure import hudson_ws_disclosure_BaseVerify

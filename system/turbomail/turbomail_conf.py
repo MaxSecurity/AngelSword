@@ -30,7 +30,11 @@ class turbomail_conf_BaseVerify:
             if flag != -1:
                 host = host[:flag]
         else:
-            host = self.url
+            if self.url.find(":") >= 0:
+                host = self.url.split(":")[0]
+                port = int(self.url.split(":")[1])
+            else:
+                host = self.url
 
         try:
             #连接Telnet服务器
@@ -42,9 +46,11 @@ class turbomail_conf_BaseVerify:
             tlib.close()
             if result.find(b"200 login successfully") is not -1:
                 cprint("[+]存在TurboMail 默认口令漏洞...(高危)\tpayload: "+host+":"+str(port)+" admin:admin321", "red")
+            else:
+                cprint("[-]不存在turbomail_conf漏洞", "white", "on_grey")
 
         except:
-            cprint("[-] "+__file__+"====>连接超时", "cyan")
+            cprint("[-] "+__file__+"====>可能不存在漏洞", "cyan")
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")

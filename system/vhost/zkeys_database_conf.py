@@ -29,15 +29,21 @@ class zkeys_database_conf_BaseVerify:
             if flag != -1:
                 host = host[:flag]
         else:
-            host = self.url
+            if self.url.find(":") >= 0:
+                host = self.url.split(":")[0]
+                port = int(self.url.split(":")[1])
+            else:
+                host = self.url
 
         try:
             conn = pymysql.connect(host=host, user="root", passwd="zkeys", port=port, connect_timeout=6)
             if conn.ping().server_status == 0:
                 cprint("[+]存在宏杰Zkeys虚拟主机默认数据库漏洞...(高危)\tpayload: "+host+":"+str(port)+" root:zkeys", "red")
+            else:
+                cprint("[-]不存在zkeys_database_conf漏洞", "white", "on_grey")
 
         except:
-            cprint("[-] "+__file__+"====>连接超时", "cyan")
+            cprint("[-] "+__file__+"====>可能不存在漏洞", "cyan")
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")

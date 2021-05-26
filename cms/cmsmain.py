@@ -93,10 +93,12 @@ from cms.live800.live800_downlog_filedownload import live800_downlog_filedownloa
 from cms.live800.live800_loginAction_sqli import live800_loginAction_sqli_BaseVerify
 from cms.live800.live800_sta_export_sqli import live800_sta_export_sqli_BaseVerify
 from cms.live800.live800_services_xxe import live800_services_xxe_BaseVerify
+from cms.live800.live800_fileDownloadServer_fileread import live800_fileDownloadServer_fileread_BaseVerify
 
 #thinkphp vulns
 from cms.thinkphp.onethink_category_sqli import onethink_category_sqli_BaseVerify
 from cms.thinkphp.thinkphp_code_exec import thinkphp_code_exec_BaseVerify
+from cms.thinkphp.thinkphp_v5_exec import thinkphp_v5_exec_BaseVerify
 
 #汇思 vulns
 from cms.wizbank.wizbank_download_filedownload import wizbank_download_filedownload_BaseVerify

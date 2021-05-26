@@ -4,7 +4,7 @@
 name: spring boot 路径泄露
 referer: http://blog.csdn.net/u011687186/article/details/73457498
 author: Lucifer
-description: robots.txt是爬虫标准文件，可从文件里找到屏蔽了哪些爬虫搜索的目录
+description: SpringBoot默认API会暴露出敏感接口
 '''
 import sys
 import requests
@@ -23,8 +23,12 @@ class springboot_api_BaseVerify:
 
             if "resourceHandlerMapping" in req.text and r"springframework.boot.actuate" in req.text:
                 cprint("[+]存在spring boot api路径泄露...(敏感信息)"+"\tpayload: "+vulnurl, "green")
+            else:
+                cprint("[-]不存在springboot_api漏洞", "white", "on_grey")
+
         except:
-            cprint("[-] "+__file__+"====>连接超时", "cyan")
+            cprint("[-] "+__file__+"====>可能不存在漏洞", "cyan")
+
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")

@@ -29,7 +29,11 @@ class kinggate_zebra_conf_BaseVerify:
             if flag != -1:
                 host = host[:flag]
         else:
-            host = self.url
+            if self.url.find(":") >= 0:
+                host = self.url.split(":")[0]
+                port = int(self.url.split(":")[1])
+            else:
+                host = self.url
 
         try:
             #连接Telnet服务器
@@ -42,9 +46,11 @@ class kinggate_zebra_conf_BaseVerify:
             tlib.close()
             if result.find(b"zrinfo>") is not -1:
                 cprint("[+]存在KingGate zebra默认配置漏洞...(高危)\tpayload: "+host+":"+str(port)+" pass:zebra", "red")
-        except:
-            cprint("[-] "+__file__+"====>连接超时", "cyan")
+            else:
+                cprint("[-]不存在kinggate_zebra_conf漏洞", "white", "on_grey")
 
+        except:
+            cprint("[-] "+__file__+"====>可能不存在漏洞", "cyan")
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     testVuln = kinggate_zebra_conf_BaseVerify(sys.argv[1])

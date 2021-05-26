@@ -30,7 +30,11 @@ class php_fastcgi_read_BaseVerify:
             if flag != -1:
                 host = host[:flag]
         else:
-            host = self.url
+            if self.url.find(":") >= 0:
+                host = self.url.split(":")[0]
+                port = int(self.url.split(":")[1])
+            else:
+                host = self.url
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(6.0)
@@ -55,10 +59,13 @@ class php_fastcgi_read_BaseVerify:
             sock.send(data_s)
             ret = sock.recv(1024).decode()
             if ret.find("root:") > 0 and ret.find("/bin/bash") > 0:
-                    cprint("[+]存在php fastcgi任意文件读取漏洞漏洞...(高危)\tpayload: "+host+":"+str(port), "red")
+                cprint("[+]存在php fastcgi任意文件读取漏洞漏洞...(高危)\tpayload: "+host+":"+str(port), "red")
+
+            else:
+                cprint("[-]不存在php_fastcgi_read漏洞", "white", "on_grey")
 
         except:
-            cprint("[-] "+__file__+"====>连接超时", "cyan")
+            cprint("[-] "+__file__+"====>可能不存在漏洞", "cyan")
         sock.close()
 
 if __name__ == "__main__":
